@@ -1,4 +1,4 @@
-## 1.0.5 - 09.02.2023
+## 1.0.5 - 11.02.2023
 * Made package ready for publishing and migration to public repo.
 
 ## 1.0.4 - 09.02.2023
