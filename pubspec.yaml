@@ -1,8 +1,6 @@
 name: qr_bill
 description: A Flutter library for use in the development of Swiss payment QR bills and payment slips.
-publish_to: 'none'
 version: 1.0.5
-author: Gaddo F Benedetti<gaddo@gfb-consulting.com>
 homepage: https://github.com/gaddobenedetti/qr_bill
 
 environment:
