@@ -19,6 +19,10 @@ Typically the `QRBill` class must always be imported as it is used as an input w
 A QR-bill Widget can be generated as follows:
 
 ```dart
+import 'package:flutter/material.dart';
+import 'package:qr_bill/qr_bill.dart';
+import 'package:qr_bill/qr_generator.dart';
+
 Future<Widget> getQRBillWidget(String rawQrCode, double size) async {
     QRBill qrBill = QRBill(data: rawQrCode);
     Widget? qrWidget;
