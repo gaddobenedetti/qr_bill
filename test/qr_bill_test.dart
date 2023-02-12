@@ -22,12 +22,8 @@ void main() {
     QRBill(
         data:
             "SPC\n0100\n1\nCH4431999123000889012\nRobert Schneider AG\nRue du Lac\n1268\n2501\nBiel\nCH\nRobert Schneider Services Switzerland AG\nRue du Lac\n1268\n2501\nBiel\nCH\n1949.75\nCHF\n2019-10-31\nPia-Maria Rutschmann-Schnyder\nGrosse Marktgasse\n28\n9400\nRorschach\nCH\nQRR\n210000000003139471430009017\nAuftrag vom 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010\nUV1;1.1;1278564;1A-2F-43-AC-9B-33-21-B0-CC-D4-28-56;TCXVMKC22;2019-02-10T15:12:39; 2019-02-10T15:18:16\nXY2;2a-2.2r;_R1-CH2_ConradCH-2074-1_3350_2019-03-13T10:23:47_16,99_0,00_0,00_0,00_0,00_+8FADt/DQ=_1=="),
-    // 001319256248\nS\nAjax Versicherung AG\nZürichstrasse\n25\n8600\nDübendorf\nCH\n\n\n\n\n\n\n\n382.45\nCHF\nK\nGiuseppe Rossi\nFriedheimstrasse 35\n8404 Winterthur\n\n\nCH\nQRR\n122469264581358644667404405\nRechnung Nr. 20 455 264 210 vom 02.02.2023 / zahlbar bis 01.03.2023\nEPD"),
     QRBill(
         // This QR should fail to validate
-        // QRBill(
-        //     data:
-        //         "SPC\n0200\n1\nCH2630000
         data:
             "SPC\n0200\n1\nCH9300762011623852957\nK\nOtto's Praxis\nBahnhoffstrasse 1\n8400 Winterthur\n\n\n\nS\n\n\n\n\n\n\n805.95\nCHF\nK\nUrsula Bamert\nFrauenfelderstrasse 55\n8404 Winterthur\n\n\n\nNON\n\n\nEPD"),
   ];
@@ -84,8 +80,8 @@ void main() {
       ..addFont(boldFont);
     await fontLoader.load();
 
-    BillGenerator bg = BillGenerator(qrBills, language: BillGenerator.english);
-    Uint8List? bill = await bg.generateInvoices();
+    BillGenerator bg = BillGenerator(language: BillGenerator.english);
+    Uint8List? bill = await bg.generateInvoices(qrBills);
     expect(bill == null, false);
     File? file;
     if (bill != null) {
@@ -108,7 +104,7 @@ void main() {
       ..addFont(boldFont);
     await fontLoader.load();
 
-    BillGenerator bg = BillGenerator(qrBills, language: BillGenerator.english);
+    BillGenerator bg = BillGenerator(language: BillGenerator.english);
     Uint8List? bill = await bg.getBinary(qrBills[3]);
     expect(bill == null, false);
     File? file;

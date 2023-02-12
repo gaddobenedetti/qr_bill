@@ -47,16 +47,13 @@ Future<Widget> getQRBillWidget(String rawQrCode, double size) async {
 To output a PDF document containing multiple QR payment slips:
 
 ```dart
-import 'package:flutter/material.dart';
 import 'package:qr_bill/qr_bill.dart';
 import 'package:qr_bill/bill_generator.dart';
 
 Future<File?> getInvoicesBinary(
       List<QRBill> qrBills, File fileToWrite) async {
-  BillGenerator bills = BillGenerator(
-    qrBills, 
-    language: BillGenerator.german);
-  Uint8List? bill = await bills.generateInvoices();
+  BillGenerator bills = BillGenerator(language: BillGenerator.german);
+  Uint8List? bill = await bills.generateInvoices(qrBills);
   return bill == null ? null : await fileToWrite.writeAsBytes(bill);
 }
 ```
@@ -67,7 +64,7 @@ Future<File?> getInvoicesBinary(
 * `QRBill QRBill({String data = ""})` Basic constructor.
 * `QRBill QRBill.fromJson(Map<String, dynamic> json)` Deserializes the QRBill object from a JSON format.
 * `Map<String, dynamic> toJson()` Serializes the QRBill object to a JSON format.
-* `String toString()` Returns the QRBill object as a raw `String` used as the QR code.
+* `String toString()` Returns the QRBill object as a raw `String` used for the QR code.
 * `bool isValid()` Returns if the QRBill strictly follows the specification.
 * `List<QRBillException> qrExceptions` Returns a list of errors if the QRBill **does not** strictly follow the specification and an empty list **if it does**.
 * Numerous `getters` and `setters` for the various Swiss QR bill attributes are also included.
@@ -77,10 +74,12 @@ Future<File?> getInvoicesBinary(
 * `QRGenerator QRGenerator(QRBill data)` Basic constructor.
 * `Future<Widget?> getWidget({required double size, double margin = 0.05})` Outputs a single QR code (via the constructor) as a Flutter widget.
 * `Future<ByteData?> getBinary({required double size, double margin = 0.05})` Outputs the binary data of a single QR code (via the constructor), in a PNG format.
-* `drawCanvas(ui.Canvas c, {double margin = 0.0, required double size, Offset offset = const Offset(0.0, 0.0)})` Draws a single QR code (via the constructor), to a paint canvas. Principally used by `BillGenerator`.
+* `void drawCanvas(Canvas c, {double margin = 0.0, required double size, Offset offset = const Offset(0.0, 0.0)})` Draws a single QR code (via the constructor), to a paint canvas. Principally used by `BillGenerator`.
 
 ### BillGenerator
 
-* `BillGenerator BillGenerator(this.qrBills, {this.language = BillGenerator.english})` Basic constructor. Sets a list of QRBills for output, as well as the language to be employed.
+* `BillGenerator BillGenerator({BillGenerator language = BillGenerator.english})` Basic constructor. Also sets the language to be employed.
 * `Future<Uint8List?> getBinary(QRBill qrBill)` Outputs the binary data of a single Swiss QR bill payment slip, in a PNG format.
-* `Future<Uint8List?> generateInvoices()` Outputs the binary data of all QRBills added with the constructor as Swiss QR bill payment slips, in a PDF format, one per page.
+* `Future<Widget?> getWidget(QRBill qrBill)` Generates and returns a Widget version of the Swiss QR bill payment slip for the supplied QRBill object.
+* `Future<List<Widget?>> getWidgets(List<QRBill> qrBills)` Generates and returns a list of Widgets for  the Swiss QR bill payment slips for inputted QRBill objec list.
+* `Future<Uint8List?> generateInvoices(List<QRBill> qrBills)` Outputs the binary data of supplied QRBills as Swiss QR bill payment slips, in a PDF format, one per page.

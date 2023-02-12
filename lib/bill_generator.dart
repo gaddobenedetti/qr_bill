@@ -10,7 +10,6 @@ import './qr_bill.dart';
 import './qr_generator.dart';
 
 class BillGenerator {
-  List<QRBill> qrBills;
   String language;
 
   static const english = "en";
@@ -47,7 +46,7 @@ class BillGenerator {
   static const _majorGap = 10.0;
   static const _minorGap = 0.0;
 
-  BillGenerator(this.qrBills, {this.language = english});
+  BillGenerator({this.language = english});
 
   Future<Uint8List?> getBinary(QRBill qrBill) async {
     ui.PictureRecorder recorder = ui.PictureRecorder();
@@ -125,7 +124,27 @@ class BillGenerator {
     return data == null ? null : Uint8List.view(data.buffer);
   }
 
-  Future<Uint8List?> generateInvoices() async {
+  Future<Widget?> getWidget(QRBill qrBill) async {
+    var bytes = await getBinary(qrBill);
+    if (bytes == null) {
+      return null;
+    } else {
+      return Image.memory(Uint8List.view(bytes.buffer));
+    }
+  }
+
+  Future<List<Widget?>> getWidgets(List<QRBill> qrBills) async {
+    List<Widget?> output = [];
+    for (QRBill qrBill in qrBills) {
+      output.add(await getWidget(qrBill));
+    }
+    return output;
+  }
+
+  Future<Uint8List?> generateInvoice(QRBill qrBill) async =>
+      await generateInvoices([qrBill]);
+
+  Future<Uint8List?> generateInvoices(List<QRBill> qrBills) async {
     pw.Document pdf = pw.Document();
     int validBills = 0;
     for (QRBill qrBill in qrBills) {
