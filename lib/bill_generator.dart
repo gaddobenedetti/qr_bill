@@ -66,7 +66,7 @@ class BillGenerator {
     // Draws Left Panel
     Offset bLeft = _drawText(c,
         offset: const Offset(l + _majorGap, t + _majorGap),
-        text: _getText("headingPaymentPart"),
+        text: _getText("headingReceipt"),
         style: styleHeader,
         bottomPadding: _majorGap);
 
@@ -89,7 +89,7 @@ class BillGenerator {
 
     bRight = _drawText(c,
         offset: bRight,
-        text: _getText("headingReceipt"),
+        text: _getText("headingPaymentPart"),
         style: styleHeader,
         rhc: true,
         bottomPadding: 40.0);
