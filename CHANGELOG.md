@@ -1,3 +1,6 @@
+## 1.1.1
+* Typo fixed (thx `cbenhagen`)
+
 ## 1.1.0
 * Updated README code example
 * Added a small example project
