@@ -486,7 +486,7 @@ class BillGenerator {
     },
     "reference": {
       english: "Reference",
-      german: "Referen",
+      german: "Referenz",
       french: "Référence",
       italian: "Riferimento"
     },
