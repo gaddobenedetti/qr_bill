@@ -1,3 +1,8 @@
+## 1.1.2
+* Exposed `complete` option in `getBinary` method to choose between fully surrounding dashed lines or simple T shaped line
+* Added scissors icon to dashed lines
+* Fixed receipt and payment part headers
+
 ## 1.1.1
 * Typo fixed (thx `cbenhagen`)
 

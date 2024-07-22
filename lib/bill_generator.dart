@@ -48,24 +48,35 @@ class BillGenerator {
 
   BillGenerator({this.language = english});
 
-  Future<Uint8List?> getBinary(QRBill qrBill) async {
+  /// Outputs the binary data of a single Swiss QR bill payment slip, in a PNG format.
+  ///
+  /// `qrBill` is the QRBill object to be converted into a PNG image.
+  /// `complete` is a boolean value that determines whether the QR bill should be surrounded by a dashed border or not.
+  Future<Uint8List?> getBinary(QRBill qrBill, {bool complete = false}) async {
     ui.PictureRecorder recorder = ui.PictureRecorder();
     Canvas c = Canvas(recorder);
 
-    const l = _margin;
-    const t = _margin;
-    const w = _width - _margin;
-    const h = _height - _margin;
+    var l = _margin;
+    var t = _margin;
+    var w = _width - _margin;
+    var h = _height - _margin;
+
+    if (!complete) {
+      l = .0;
+      t = _margin;
+      w = _width;
+      h = _height;
+    }
 
     // Draws white background
     c.drawColor(Colors.white, BlendMode.src);
 
     // Draws dashed border
-    _drawBorders(c, t, l, w, h);
+    _drawBorders(c, t, l, w, h, complete);
 
     // Draws Left Panel
     Offset bLeft = _drawText(c,
-        offset: const Offset(l + _majorGap, t + _majorGap),
+        offset: Offset(l + _majorGap * 2, t + _majorGap * 2),
         text: _getText("headingReceipt"),
         style: styleHeader,
         bottomPadding: _majorGap);
@@ -82,7 +93,7 @@ class BillGenerator {
         bottomPadding: 0.0);
 
     // Draws Right Panel
-    Offset bRight = const Offset((w * _panelRatio) + 20.0, t + _majorGap);
+    Offset bRight = Offset((w * _panelRatio) + 20.0, t + _majorGap * 2);
 
     Offset bRight2 = _drawBlocPaymentDetails(c,
         bRight + const Offset((_width * _qrRatio) + 40.0, 0.0), qrBill, true);
@@ -168,6 +179,27 @@ class BillGenerator {
       _drawDashedLine(c, Offset(l, h), Offset(l, t));
     }
     _drawDashedLine(c, Offset(w * _panelRatio, t), Offset(w * _panelRatio, h));
+
+    if (!complete) {
+      const icon = Icons.cut;
+      TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
+      textPainter.text = TextSpan(
+        text: String.fromCharCode(icon.codePoint),
+        style: TextStyle(
+          fontSize: 20.0,
+          fontFamily: icon.fontFamily,
+          color: Colors.black,
+        ),
+      );
+      textPainter.layout();
+      textPainter.paint(c, const Offset(10.0, 10.0));
+
+      c.save();
+      c.translate(w * _panelRatio - 10, h - 10);
+      c.rotate(-pi / 2);
+      textPainter.paint(c, const Offset(0.0, 0.0));
+      c.restore();
+    }
   }
 
   String _formatIBAN(String? raw) {

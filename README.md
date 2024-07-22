@@ -79,7 +79,7 @@ Future<File?> getInvoicesBinary(
 ### BillGenerator
 
 * `BillGenerator BillGenerator({BillGenerator language = BillGenerator.english})` Basic constructor. Also sets the language to be employed.
-* `Future<Uint8List?> getBinary(QRBill qrBill)` Outputs the binary data of a single Swiss QR bill payment slip, in a PNG format.
+* `Future<Uint8List?> getBinary(QRBill qrBill {bool complete = false})` Outputs the binary data of a single Swiss QR bill payment slip, in a PNG format.
 * `Future<Widget?> getWidget(QRBill qrBill)` Generates and returns a Widget version of the Swiss QR bill payment slip for the supplied QRBill object.
 * `Future<List<Widget?>> getWidgets(List<QRBill> qrBills)` Generates and returns a list of Widgets for  the Swiss QR bill payment slips for inputted QRBill objec list.
 * `Future<Uint8List?> generateInvoices(List<QRBill> qrBills)` Outputs the binary data of supplied QRBills as Swiss QR bill payment slips, in a PDF format, one per page.
